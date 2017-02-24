@@ -10,11 +10,13 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
 import java.io.IOException;
 
+import static it.esteco.auction.sniper.Main.AUCTION_RESOURCE;
+import static it.esteco.auction.sniper.Main.ITEM_ID_AS_LOGIN;
+
 public class FakeAuctionServer {
 
     public static final String XMPP_HOSTNAME = "localhost";
-    public static final String AUCTION_RESOURCE = "Auction";
-    public static final String ITEM_ID_AS_LOGIN = "auction-%s";
+    public static final String XMPP_SERVICE_NAME = "broker";
     private static final String AUCTION_PASSWORD = "auction";
 
     private final String itemId;
@@ -26,7 +28,7 @@ public class FakeAuctionServer {
         this.itemId = itemId;
         XMPPTCPConnectionConfiguration conf = XMPPTCPConnectionConfiguration.builder()
                 .setHost(XMPP_HOSTNAME)
-                .setServiceName("broker")
+                .setServiceName(XMPP_SERVICE_NAME)
                 .build();
         this.connection = new XMPPTCPConnection(conf);
     }
