@@ -1,0 +1,35 @@
+---
+# tasks file for openfire version 4.1.2
+
+- name: Run the equivalent of "apt-get update"
+  apt:
+    update_cache: yes
+
+- name: Install latest version of openjdk-8-jre-headless
+  apt:
+    name: openjdk-8-jre-headless
+    state: latest
+
+- name: Install openfire .deb package
+  apt:
+    deb: https://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_4.1.2_all.deb
+
+- name: Copy openfire.xml file
+  copy:
+    src: openfire.xml
+    dest: /etc/openfire/
+    owner: openfire
+    group: openfire
+
+- name: Copy openfire.script file
+  copy:
+    src: openfire.script
+    dest: /var/lib/openfire/embedded-db/
+    owner: openfire
+    group: openfire
+
+- name: Start openfire
+  service:
+    name: openfire
+    state: restarted
+    enabled: yes
