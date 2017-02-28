@@ -13,6 +13,8 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import static java.lang.String.format;
+
 public class Main implements SniperListener {
 
     public static final String AUCTION_RESOURCE = "Auction";
@@ -49,15 +51,20 @@ public class Main implements SniperListener {
     private void joinAuction(XMPPTCPConnection connection, String itemId) throws SmackException.NotConnectedException {
         disconnectWhenUICloses(connection);
         ChatManager chatManager = ChatManager.getInstanceFor(connection);
+        Chat chat = chatManager.createChat(
+                auctionJID(itemId, connection),
+                null);
         Auction auction = new Auction() {
             @Override
             public void bid(int amount) {
-
+                try {
+                    chat.sendMessage(format(BID_COMMAND_FORMAT, amount));
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                }
             }
         };
-        Chat chat = chatManager.createChat(
-                auctionJID(itemId, connection),
-                new AuctionMessageTranslator(new AuctionSniper(auction, this)));
+        chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(auction, this)));
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
     }
@@ -76,7 +83,7 @@ public class Main implements SniperListener {
     }
 
     private static String auctionJID(String itemId, XMPPTCPConnection connection) {
-        return String.format(AUCTION_JID_FORMAT, itemId, connection.getServiceName());
+        return format(AUCTION_JID_FORMAT, itemId, connection.getServiceName());
     }
 
     private void disconnectWhenUICloses(XMPPTCPConnection connection) {
@@ -95,6 +102,6 @@ public class Main implements SniperListener {
 
     @Override
     public void sniperBidding() {
-
+        SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_BIDDING));
     }
 }
