@@ -18,8 +18,8 @@ public class Main implements AuctionEventListener {
 
     public static final String AUCTION_RESOURCE = "Auction";
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
-    public static final String JOIN_COMMAND_FORMAT = "SOLVersion1.1; Command: JOIN;";
-    public static final String BID_COMMAND_FORMAT = "SOLVersion 1.1; Command: BID; Price: %d;";
+    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
+    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_SERVICE_NAME = 1;
@@ -86,5 +86,10 @@ public class Main implements AuctionEventListener {
     @Override
     public void auctionClosed() {
         SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_LOST));
+    }
+
+    @Override
+    public void currentPrice(int price, int increment) {
+
     }
 }

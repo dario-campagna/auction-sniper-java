@@ -56,7 +56,7 @@ public class FakeAuctionServer {
     }
 
     public void announceClosed() throws SmackException.NotConnectedException {
-        currentChat.sendMessage(new Message());
+        currentChat.sendMessage("SOLVersion: 1.1; Event: CLOSE;");
     }
 
     public void hasReceivedJoinRequestFrom(String sniperId) throws InterruptedException {
