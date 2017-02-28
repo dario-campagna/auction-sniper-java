@@ -1,4 +1,4 @@
-package it.esteco.auction.sniper.runner;
+package test.auctionsniper.e2e.runner;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
 import com.objogate.wl.swing.driver.JFrameDriver;
