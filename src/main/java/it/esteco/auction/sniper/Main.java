@@ -14,7 +14,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-public class Main implements AuctionEventListener {
+public class Main implements SniperListener {
 
     public static final String AUCTION_RESOURCE = "Auction";
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
@@ -52,7 +52,7 @@ public class Main implements AuctionEventListener {
         ChatManager chatManager = ChatManager.getInstanceFor(connection);
         Chat chat = chatManager.createChat(
                 auctionJID(itemId, connection),
-                new AuctionMessageTranslator(this));
+                new AuctionMessageTranslator(new AuctionSniper(this)));
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
     }
@@ -84,12 +84,7 @@ public class Main implements AuctionEventListener {
     }
 
     @Override
-    public void auctionClosed() {
+    public void sniperLost() {
         SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_LOST));
-    }
-
-    @Override
-    public void currentPrice(int price, int increment) {
-
     }
 }
