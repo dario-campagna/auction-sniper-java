@@ -12,6 +12,7 @@ public class XMPPAuction implements Auction {
         this.chat = chat;
     }
 
+    @Override
     public void join() {
         sendMessage(Main.JOIN_COMMAND_FORMAT);
     }
