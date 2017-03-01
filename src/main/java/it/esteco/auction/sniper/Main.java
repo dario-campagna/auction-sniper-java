@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import static java.lang.String.format;
 
-public class Main implements SniperListener {
+public class Main {
 
     public static final String AUCTION_RESOURCE = "Auction";
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
@@ -50,23 +50,15 @@ public class Main implements SniperListener {
 
     private void joinAuction(XMPPTCPConnection connection, String itemId) throws SmackException.NotConnectedException {
         disconnectWhenUICloses(connection);
-        ChatManager chatManager = ChatManager.getInstanceFor(connection);
-        Chat chat = chatManager.createChat(
+
+        Chat chat = ChatManager.getInstanceFor(connection).createChat(
                 auctionJID(itemId, connection),
                 null);
-        Auction auction = new Auction() {
-            @Override
-            public void bid(int amount) {
-                try {
-                    chat.sendMessage(format(BID_COMMAND_FORMAT, amount));
-                } catch (SmackException.NotConnectedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(auction, this)));
         this.notToBeGCd = chat;
-        chat.sendMessage(JOIN_COMMAND_FORMAT);
+
+        Auction auction = new XMPPAuction(chat);
+        chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(auction, new SniperStateDisplayer())));
+        auction.join();
     }
 
     private static XMPPTCPConnection connection(String hostname, String serviceName, String username, String password) throws IOException, XMPPException, SmackException {
@@ -95,13 +87,21 @@ public class Main implements SniperListener {
         });
     }
 
-    @Override
-    public void sniperLost() {
-        SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_LOST));
+    public class SniperStateDisplayer implements SniperListener {
+
+        @Override
+        public void sniperLost() {
+            showStatus(MainWindow.STATUS_LOST);
+        }
+
+        @Override
+        public void sniperBidding() {
+            showStatus(MainWindow.STATUS_BIDDING);
+        }
+
+        private void showStatus(String status) {
+            SwingUtilities.invokeLater(() -> ui.showStatus(status));
+        }
     }
 
-    @Override
-    public void sniperBidding() {
-        SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_BIDDING));
-    }
 }
