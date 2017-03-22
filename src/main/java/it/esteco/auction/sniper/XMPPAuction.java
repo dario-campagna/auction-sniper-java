@@ -3,8 +3,6 @@ package it.esteco.auction.sniper;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
 
-import static java.lang.String.format;
-
 public class XMPPAuction implements Auction {
     private final Chat chat;
 

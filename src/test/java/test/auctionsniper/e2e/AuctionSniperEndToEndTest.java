@@ -1,9 +1,9 @@
 package test.auctionsniper.e2e;
 
-import test.auctionsniper.e2e.fakeserver.FakeAuctionServer;
-import test.auctionsniper.e2e.runner.ApplicationRunner;
 import org.junit.After;
 import org.junit.Test;
+import test.auctionsniper.e2e.fakeserver.FakeAuctionServer;
+import test.auctionsniper.e2e.runner.ApplicationRunner;
 
 public class AuctionSniperEndToEndTest {
 
@@ -48,6 +48,33 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID);
+        application.hasShownSniperIsWinning();
+
+        auction.announceClosed();
+        application.showsSniperHasWonAuction();
+    }
+
+    @Test
+    public void sniperWinsAnAuctionAfterTwoBids() throws Exception {
+        auction.startSellingItem();
+
+        application.startBiddingIn(auction);
+        auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1100, 98, "other bidder");
+        application.hasShownSniperIsBidding();
+
+        auction.hasReceivedBid(1198, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1198, 100, ApplicationRunner.SNIPER_XMPP_ID);
+        application.hasShownSniperIsWinning();
+
+        auction.reportPrice(1298, 102, "other bidder");
+        application.hasShownSniperIsBidding();
+
+        auction.hasReceivedBid(1400, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1400, 100, ApplicationRunner.SNIPER_XMPP_ID);
         application.hasShownSniperIsWinning();
 
         auction.announceClosed();

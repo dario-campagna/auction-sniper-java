@@ -15,11 +15,10 @@ public class AuctionSniperTest {
 
     @Rule
     public JUnitRuleMockery context = new JUnitRuleMockery();
-
     private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener = context.mock(SniperListener.class);
-    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener);
     private final States sniperState = context.states("sniper");
+    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener);
 
     @Test
     public void reportsLostIfAuctionClosesImmediately() throws Exception {
@@ -32,7 +31,7 @@ public class AuctionSniperTest {
 
     @Test
     public void reportsLostIfAuctionClosesWhenBidding() throws Exception {
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             ignoring(auction);
             allowing(sniperListener).sniperBidding();
             then(sniperState.is("bidding"));
@@ -66,8 +65,36 @@ public class AuctionSniperTest {
     }
 
     @Test
+    public void reportsWinningIfCurrentPriceComesFromSniperWhenBidding() throws Exception {
+        context.checking(new Expectations() {{
+            ignoring(auction);
+            allowing(sniperListener).sniperBidding();
+            then(sniperState.is("bidding"));
+            atLeast(1).of(sniperListener).sniperWinning();
+            when(sniperState.is("bidding"));
+        }});
+
+        sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
+        sniper.currentPrice(168, 45, PriceSource.FromSniper);
+    }
+
+    @Test
+    public void reportsBiddingIfCurrentPriceComesFromOtherBidderWhenWinning() throws Exception {
+        context.checking(new Expectations() {{
+            ignoring(auction);
+            allowing(sniperListener).sniperWinning();
+            then(sniperState.is("winning"));
+            atLeast(1).of(sniperListener).sniperBidding();
+            when(sniperState.is("winning"));
+        }});
+
+        sniper.currentPrice(123, 45, PriceSource.FromSniper);
+        sniper.currentPrice(168, 45, PriceSource.FromOtherBidder);
+    }
+
+    @Test
     public void reportsWonIfAuctionClosesWhenWinning() throws Exception {
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             ignoring(auction);
             allowing(sniperListener).sniperWinning();
             then(sniperState.is("winning"));

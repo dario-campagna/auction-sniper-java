@@ -44,23 +44,6 @@ public class Main {
                 args[ARG_ITEM_ID]);
     }
 
-    private void startUserInterface() throws InvocationTargetException, InterruptedException {
-        SwingUtilities.invokeAndWait(() -> ui = new MainWindow());
-    }
-
-    private void joinAuction(XMPPTCPConnection connection, String itemId) throws SmackException.NotConnectedException {
-        disconnectWhenUICloses(connection);
-
-        Chat chat = ChatManager.getInstanceFor(connection).createChat(
-                auctionJID(itemId, connection),
-                null);
-        this.notToBeGCd = chat;
-
-        Auction auction = new XMPPAuction(chat);
-        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer())));
-        auction.join();
-    }
-
     private static XMPPTCPConnection connection(String hostname, String serviceName, String username, String password) throws IOException, XMPPException, SmackException {
         XMPPTCPConnectionConfiguration conf = XMPPTCPConnectionConfiguration.builder()
                 .setHost(hostname)
@@ -76,6 +59,23 @@ public class Main {
 
     private static String auctionJID(String itemId, XMPPTCPConnection connection) {
         return format(AUCTION_JID_FORMAT, itemId, connection.getServiceName());
+    }
+
+    private void startUserInterface() throws InvocationTargetException, InterruptedException {
+        SwingUtilities.invokeAndWait(() -> ui = new MainWindow());
+    }
+
+    private void joinAuction(XMPPTCPConnection connection, String itemId) throws SmackException.NotConnectedException {
+        disconnectWhenUICloses(connection);
+
+        Chat chat = ChatManager.getInstanceFor(connection).createChat(
+                auctionJID(itemId, connection),
+                null);
+        this.notToBeGCd = chat;
+
+        Auction auction = new XMPPAuction(chat);
+        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer())));
+        auction.join();
     }
 
     private void disconnectWhenUICloses(XMPPTCPConnection connection) {

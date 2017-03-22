@@ -12,17 +12,16 @@ import org.junit.Test;
 
 public class AuctionMessageTranslatorTest {
 
-    @Rule
-    public JUnitRuleMockery context = new JUnitRuleMockery();
-
     private static final String SNIPER_ID = "sniper";
     private static final Chat UNUSED_CHAT = null;
+    @Rule
+    public JUnitRuleMockery context = new JUnitRuleMockery();
     private final AuctionEventListener listener = context.mock(AuctionEventListener.class);
     private AuctionMessageTranslator translator = new AuctionMessageTranslator(SNIPER_ID, listener);
 
     @Test
     public void notifiesAuctionClosedWhenCloseMessageReceived() throws Exception {
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             oneOf(listener).auctionClosed();
         }});
 
@@ -34,7 +33,7 @@ public class AuctionMessageTranslatorTest {
 
     @Test
     public void notifiesBidDetailsWhenCurrentPriceMessageReceivedFromOtherBidder() throws Exception {
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             exactly(1).of(listener).currentPrice(192, 7, PriceSource.FromOtherBidder);
         }});
 
@@ -46,7 +45,7 @@ public class AuctionMessageTranslatorTest {
 
     @Test
     public void notifiesBidDetailsWhenCurrentPriceMessageReceivedFromSniper() throws Exception {
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             exactly(1).of(listener).currentPrice(234, 5, PriceSource.FromSniper);
         }});
 

@@ -7,9 +7,9 @@ import org.jivesoftware.smack.packet.Message;
 import java.util.HashMap;
 import java.util.Map;
 
+import static it.esteco.auction.sniper.AuctionEventListener.PriceSource;
 import static it.esteco.auction.sniper.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_CLOSE;
 import static it.esteco.auction.sniper.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_PRICE;
-import static it.esteco.auction.sniper.AuctionEventListener.PriceSource;
 
 public class AuctionMessageTranslator implements ChatMessageListener {
 
@@ -39,6 +39,18 @@ public class AuctionMessageTranslator implements ChatMessageListener {
         public static final String EVENT_TYPE_PRICE = "PRICE";
 
         private final Map<String, String> fields = new HashMap<>();
+
+        static AuctionEvent from(String messageBody) {
+            AuctionEvent event = new AuctionEvent();
+            for (String field : fieldsIn(messageBody)) {
+                event.addField(field);
+            }
+            return event;
+        }
+
+        private static String[] fieldsIn(String messageBody) {
+            return messageBody.split(";");
+        }
 
         public String type() {
             return get("Event");
@@ -71,18 +83,6 @@ public class AuctionMessageTranslator implements ChatMessageListener {
         private void addField(String field) {
             String[] pair = field.split(":");
             fields.put(pair[0].trim(), pair[1].trim());
-        }
-
-        static AuctionEvent from(String messageBody) {
-            AuctionEvent event = new AuctionEvent();
-            for (String field : fieldsIn(messageBody)) {
-                event.addField(field);
-            }
-            return event;
-        }
-
-        private static String[] fieldsIn(String messageBody) {
-            return messageBody.split(";");
         }
     }
 }

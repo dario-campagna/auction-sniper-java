@@ -7,8 +7,8 @@ import test.auctionsniper.e2e.fakeserver.FakeAuctionServer;
 public class ApplicationRunner {
 
     private static final String SNIPER_ID = "sniper";
-    private static final String SNIPER_PASSWORD = "sniper";
     public static final String SNIPER_XMPP_ID = SNIPER_ID + "@" + FakeAuctionServer.XMPP_SERVICE_NAME + "/" + Main.AUCTION_RESOURCE;
+    private static final String SNIPER_PASSWORD = "sniper";
     private AuctionSniperDriver driver;
 
     public void startBiddingIn(final FakeAuctionServer auction) {
