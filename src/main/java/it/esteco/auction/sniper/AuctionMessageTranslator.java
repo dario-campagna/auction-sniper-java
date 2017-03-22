@@ -7,10 +7,17 @@ import org.jivesoftware.smack.packet.Message;
 import java.util.HashMap;
 import java.util.Map;
 
+import static it.esteco.auction.sniper.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_CLOSE;
+import static it.esteco.auction.sniper.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_PRICE;
+import static it.esteco.auction.sniper.AuctionEventListener.PriceSource;
+
 public class AuctionMessageTranslator implements ChatMessageListener {
+
+    private final String sniperId;
     private final AuctionEventListener listener;
 
-    public AuctionMessageTranslator(AuctionEventListener listener) {
+    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener) {
+        this.sniperId = sniperId;
         this.listener = listener;
     }
 
@@ -19,14 +26,17 @@ public class AuctionMessageTranslator implements ChatMessageListener {
         AuctionEvent event = AuctionEvent.from(message.getBody());
 
         String eventType = event.type();
-        if ("CLOSE".equals(eventType)) {
+        if (EVENT_TYPE_CLOSE.equals(eventType)) {
             listener.auctionClosed();
-        } else if ("PRICE".equals(eventType)) {
-            listener.currentPrice(event.currentPrice(), event.increment());
+        } else if (EVENT_TYPE_PRICE.equals(eventType)) {
+            listener.currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId));
         }
     }
 
-    private static class AuctionEvent {
+    public static class AuctionEvent {
+
+        public static final String EVENT_TYPE_CLOSE = "CLOSE";
+        public static final String EVENT_TYPE_PRICE = "PRICE";
 
         private final Map<String, String> fields = new HashMap<>();
 
@@ -40,6 +50,14 @@ public class AuctionMessageTranslator implements ChatMessageListener {
 
         public int increment() {
             return getInt("Increment");
+        }
+
+        public PriceSource isFrom(String sniperId) {
+            return sniperId.equals(bidder()) ? PriceSource.FromSniper : PriceSource.FromOtherBidder;
+        }
+
+        private String bidder() {
+            return get("Bidder");
         }
 
         private String get(String fieldName) {
