@@ -1,5 +1,7 @@
-package it.esteco.auction.sniper;
+package it.esteco.auction.sniper.auction;
 
+import it.esteco.auction.sniper.Auction;
+import it.esteco.auction.sniper.mainwindow.Main;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
 
