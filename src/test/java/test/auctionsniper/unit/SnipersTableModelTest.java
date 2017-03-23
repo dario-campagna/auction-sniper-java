@@ -2,6 +2,7 @@ package test.auctionsniper.unit;
 
 import it.esteco.auction.sniper.SniperSnapshot;
 import it.esteco.auction.sniper.SniperState;
+import it.esteco.auction.sniper.mainwindow.Column;
 import it.esteco.auction.sniper.mainwindow.SnipersTableModel;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -13,7 +14,6 @@ import org.junit.Test;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import it.esteco.auction.sniper.mainwindow.Column;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
@@ -21,11 +21,10 @@ import static org.junit.Assert.assertThat;
 
 public class SnipersTableModelTest {
 
+    private final SnipersTableModel model = new SnipersTableModel();
     @Rule
     public JUnitRuleMockery context = new JUnitRuleMockery();
-
     private TableModelListener listener = context.mock(TableModelListener.class);
-    private final SnipersTableModel model = new SnipersTableModel();
 
     @Before
     public void attachModelListener() throws Exception {
@@ -35,6 +34,13 @@ public class SnipersTableModelTest {
     @Test
     public void hasEnoughColumns() throws Exception {
         assertThat(model.getColumnCount(), equalTo(Column.values().length));
+    }
+
+    @Test
+    public void setsUpColumnHeadings() throws Exception {
+        for (Column column : Column.values()) {
+            assertEquals(column.name, model.getColumnName(column.ordinal()));
+        }
     }
 
     @Test

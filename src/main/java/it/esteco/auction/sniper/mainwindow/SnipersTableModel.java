@@ -3,7 +3,6 @@ package it.esteco.auction.sniper.mainwindow;
 import it.esteco.auction.sniper.SniperListener;
 import it.esteco.auction.sniper.SniperSnapshot;
 import it.esteco.auction.sniper.SniperState;
-import it.esteco.auction.sniper.mainwindow.Column;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -12,6 +11,10 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     private static String[] STATUS_TEXT = {"Joining", "Bidding", "Winning", "Lost", "Won"};
 
     private SniperSnapshot snapshot = new SniperSnapshot("", 0, 0, SniperState.JOINING);
+
+    public static String textFor(SniperState state) {
+        return STATUS_TEXT[state.ordinal()];
+    }
 
     @Override
     public int getRowCount() {
@@ -24,6 +27,11 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     }
 
     @Override
+    public String getColumnName(int columnIndex) {
+        return Column.at(columnIndex).name;
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return Column.at(columnIndex).valueIn(snapshot);
     }
@@ -32,10 +40,6 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     public void sniperStateChanged(SniperSnapshot newSniperSnapshot) {
         snapshot = newSniperSnapshot;
         fireTableRowsUpdated(0, 0);
-    }
-
-    public static String textFor(SniperState state) {
-        return STATUS_TEXT[state.ordinal()];
     }
 
 }

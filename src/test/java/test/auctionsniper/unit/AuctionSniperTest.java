@@ -15,12 +15,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class AuctionSniperTest {
 
     private final String ITEM_ID = "item_id";
+    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
     @Rule
     public JUnitRuleMockery context = new JUnitRuleMockery();
     private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener = context.mock(SniperListener.class);
     private final States sniperState = context.states("sniper");
-    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
 
     @Test
     public void reportsLostIfAuctionClosesImmediately() throws Exception {
@@ -97,7 +97,7 @@ public class AuctionSniperTest {
             ignoring(auction);
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.WINNING)));
             then(sniperState.is("winning"));
-            atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 168,   213, SniperState.BIDDING));
+            atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 168, 213, SniperState.BIDDING));
             when(sniperState.is("winning"));
         }});
 

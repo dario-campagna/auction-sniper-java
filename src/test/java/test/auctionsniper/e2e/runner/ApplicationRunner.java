@@ -1,7 +1,8 @@
 package test.auctionsniper.e2e.runner;
 
-import it.esteco.auction.sniper.mainwindow.Main;
 import it.esteco.auction.sniper.SniperState;
+import it.esteco.auction.sniper.mainwindow.Main;
+import it.esteco.auction.sniper.mainwindow.MainWindow;
 import it.esteco.auction.sniper.mainwindow.SnipersTableModel;
 import test.auctionsniper.e2e.fakeserver.FakeAuctionServer;
 
@@ -34,6 +35,8 @@ public class ApplicationRunner {
         thread.setDaemon(true);
         thread.start();
         driver = new AuctionSniperDriver(1000);
+        driver.hasTitle(MainWindow.APPLICATION_TITLE);
+        driver.hasColumnTitles();
         driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.JOINING));
     }
 

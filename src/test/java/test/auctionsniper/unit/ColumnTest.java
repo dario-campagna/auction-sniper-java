@@ -1,12 +1,12 @@
 package test.auctionsniper.unit;
 
-import it.esteco.auction.sniper.mainwindow.Column;
 import it.esteco.auction.sniper.SniperSnapshot;
 import it.esteco.auction.sniper.SniperState;
+import it.esteco.auction.sniper.mainwindow.Column;
 import org.junit.Test;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ColumnTest {
 

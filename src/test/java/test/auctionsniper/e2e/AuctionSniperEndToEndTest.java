@@ -1,7 +1,6 @@
 package test.auctionsniper.e2e;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import test.auctionsniper.e2e.fakeserver.FakeAuctionServer;
 import test.auctionsniper.e2e.runner.ApplicationRunner;
