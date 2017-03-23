@@ -27,7 +27,7 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.reportPrice(1000, 98, "other bidder");
-        application.hasShownSniperIsBidding();
+        application.hasShownSniperIsBidding(auction, 1000, 1098);
 
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
@@ -43,7 +43,7 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.reportPrice(1000, 98, "other bidder");
-        application.hasShownSniperIsBidding(1000, 1098); //last price, last bid
+        application.hasShownSniperIsBidding(auction, 1000, 1098); //last price, last bid
 
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
@@ -62,23 +62,23 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.reportPrice(1100, 98, "other bidder");
-        application.hasShownSniperIsBidding();
+        application.hasShownSniperIsBidding(auction, 1100, 1198);
 
         auction.hasReceivedBid(1198, ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.reportPrice(1198, 100, ApplicationRunner.SNIPER_XMPP_ID);
-        application.hasShownSniperIsWinning();
+        application.hasShownSniperIsWinning(1198);
 
         auction.reportPrice(1298, 102, "other bidder");
-        application.hasShownSniperIsBidding();
+        application.hasShownSniperIsBidding(auction, 1298, 1400);
 
         auction.hasReceivedBid(1400, ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.reportPrice(1400, 100, ApplicationRunner.SNIPER_XMPP_ID);
-        application.hasShownSniperIsWinning();
+        application.hasShownSniperIsWinning(1400);
 
         auction.announceClosed();
-        application.showsSniperHasWonAuction();
+        application.showsSniperHasWonAuction(1400);
     }
 
     @After

@@ -40,34 +40,22 @@ public class ApplicationRunner {
         driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.JOINING));
     }
 
-    public void hasShownSniperIsBidding() {
-        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.BIDDING));
-    }
-
-    public void hasShownSniperIsBidding(int lastPrice, int lastBid) {
-        driver.showsSniperStatus(itemId, lastPrice, lastBid, SnipersTableModel.textFor(SniperState.BIDDING));
-    }
-
-    public void showsSniperHasLostAuction() {
-        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.LOST));
-    }
-
     public void stop() {
         if (driver != null) {
             driver.dispose();
         }
     }
 
-    public void hasShownSniperIsWinning() {
-        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.WINNING));
+    public void hasShownSniperIsBidding(FakeAuctionServer auction, int lastPrice, int lastBid) {
+        driver.showsSniperStatus(auction.getItemId(), lastPrice, lastBid, SnipersTableModel.textFor(SniperState.BIDDING));
+    }
+
+    public void showsSniperHasLostAuction() {
+        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.LOST));
     }
 
     public void hasShownSniperIsWinning(int winningBid) {
         driver.showsSniperStatus(itemId, winningBid, winningBid, SnipersTableModel.textFor(SniperState.WINNING));
-    }
-
-    public void showsSniperHasWonAuction() {
-        driver.showsSniperStatus(SnipersTableModel.textFor(SniperState.WON));
     }
 
     public void showsSniperHasWonAuction(int lastPrice) {
