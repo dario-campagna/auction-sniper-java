@@ -14,6 +14,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static java.lang.String.format;
 
@@ -28,13 +30,12 @@ public class Main {
     private static final int ARG_SERVICE_NAME = 1;
     private static final int ARG_USERNAME = 2;
     private static final int ARG_PASSWORD = 3;
-    private static final int ARG_ITEM_ID = 4;
     private static final String AUCTION_JID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
 
     private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
     @SuppressWarnings("unused")
-    private Chat notToBeGCd;
+    private Collection<Chat> notToBeGCd = new ArrayList<>();
 
     public Main() throws Exception {
         startUserInterface();
@@ -42,9 +43,11 @@ public class Main {
 
     public static void main(String... args) throws Exception {
         Main main = new Main();
-        main.joinAuction(
-                connection(args[ARG_HOSTNAME], args[ARG_SERVICE_NAME], args[ARG_USERNAME], args[ARG_PASSWORD]),
-                args[ARG_ITEM_ID]);
+        XMPPTCPConnection connection = connection(args[ARG_HOSTNAME], args[ARG_SERVICE_NAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
+        main.disconnectWhenUICloses(connection);
+        for (int i = 4; i < args.length; i++) {
+            main.joinAuction(connection, args[i]);
+        }
     }
 
     private static XMPPTCPConnection connection(String hostname, String serviceName, String username, String password) throws IOException, XMPPException, SmackException {
@@ -69,16 +72,24 @@ public class Main {
     }
 
     private void joinAuction(XMPPTCPConnection connection, String itemId) throws SmackException.NotConnectedException {
-        disconnectWhenUICloses(connection);
-
+        safelyAddItemToModel(itemId);
         Chat chat = ChatManager.getInstanceFor(connection).createChat(
                 auctionJID(itemId, connection),
                 null);
-        this.notToBeGCd = chat;
+        this.notToBeGCd.add(chat);
 
         Auction auction = new XMPPAuction(chat);
         chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId)));
         auction.join();
+    }
+
+    private void safelyAddItemToModel(String itemId) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                snipers.addSniper(SniperSnapshot.joining(itemId));
+            }
+        });
     }
 
     private void disconnectWhenUICloses(XMPPTCPConnection connection) {

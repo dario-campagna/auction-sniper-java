@@ -8,8 +8,7 @@ import org.jivesoftware.smack.packet.Message;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.Assert.assertThat;
 
 public class SingleMessageListener implements ChatMessageListener {
@@ -23,7 +22,6 @@ public class SingleMessageListener implements ChatMessageListener {
 
     public void receivesAMessage(Matcher<? super String> messageMatcher) throws InterruptedException {
         final Message message = messages.poll(5, TimeUnit.SECONDS);
-        assertThat("Message", message, is(notNullValue()));
-        assertThat(message.getBody(), messageMatcher);
+        assertThat(message, hasProperty("body", messageMatcher));
     }
 }
