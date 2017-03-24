@@ -1,7 +1,7 @@
-package it.esteco.auctionsniper.xmpp;
+package it.esteco.auctionsniper.adapters.xmpp;
 
-import it.esteco.auctionsniper.Auction;
-import it.esteco.auctionsniper.AuctionHouse;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.AuctionHouse;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 

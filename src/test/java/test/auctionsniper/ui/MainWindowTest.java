@@ -1,8 +1,8 @@
 package test.auctionsniper.ui;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
-import it.esteco.auctionsniper.ui.MainWindow;
-import it.esteco.auctionsniper.ui.SniperPortfolio;
+import it.esteco.auctionsniper.adapters.ui.MainWindow;
+import it.esteco.auctionsniper.domain.SniperPortfolio;
 import org.junit.Test;
 import test.auctionsniper.runner.AuctionSniperDriver;
 

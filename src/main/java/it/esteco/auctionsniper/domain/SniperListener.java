@@ -1,4 +1,6 @@
-package it.esteco.auctionsniper;
+package it.esteco.auctionsniper.domain;
+
+import it.esteco.auctionsniper.domain.SniperSnapshot;
 
 public interface SniperListener {
 

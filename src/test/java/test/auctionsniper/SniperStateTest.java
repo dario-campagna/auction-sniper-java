@@ -1,7 +1,7 @@
 package test.auctionsniper;
 
 import it.esteco.auctionsniper.Defect;
-import it.esteco.auctionsniper.SniperState;
+import it.esteco.auctionsniper.domain.SniperState;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

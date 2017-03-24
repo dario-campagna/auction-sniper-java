@@ -1,8 +1,8 @@
-package it.esteco.auctionsniper.xmpp;
+package it.esteco.auctionsniper.adapters.xmpp;
 
-import it.esteco.auctionsniper.Auction;
-import it.esteco.auctionsniper.AuctionEventListener;
-import it.esteco.auctionsniper.ui.Announcer;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.AuctionEventListener;
+import it.esteco.auctionsniper.Announcer;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.chat.Chat;

@@ -1,6 +1,4 @@
-package it.esteco.auctionsniper.ui;
-
-import it.esteco.auctionsniper.*;
+package it.esteco.auctionsniper.domain;
 
 public class SniperLauncher implements UserRequestListener {
 

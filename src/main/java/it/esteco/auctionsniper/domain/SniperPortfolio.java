@@ -1,8 +1,4 @@
-package it.esteco.auctionsniper.ui;
-
-import it.esteco.auctionsniper.AuctionSniper;
-import it.esteco.auctionsniper.PortfolioListener;
-import it.esteco.auctionsniper.SniperCollector;
+package it.esteco.auctionsniper.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +6,7 @@ import java.util.Collection;
 public class SniperPortfolio implements SniperCollector {
 
     private Collection<AuctionSniper> snipers = new ArrayList<>();
-    private PortfolioListener listener;
+    private SniperPortfolioListener listener;
 
     @Override
     public void addSniper(AuctionSniper sniper) {
@@ -18,7 +14,7 @@ public class SniperPortfolio implements SniperCollector {
         listener.sniperAdded(sniper);
     }
 
-    public void addPortfolioListener(PortfolioListener listener) {
+    public void addPortfolioListener(SniperPortfolioListener listener) {
         this.listener = listener;
     }
 }

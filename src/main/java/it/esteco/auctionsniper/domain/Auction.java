@@ -1,4 +1,4 @@
-package it.esteco.auctionsniper;
+package it.esteco.auctionsniper.domain;
 
 public interface Auction {
     void join();

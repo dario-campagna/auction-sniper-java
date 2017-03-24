@@ -1,7 +1,11 @@
 package test.auctionsniper.ui;
 
-import it.esteco.auctionsniper.*;
-import it.esteco.auctionsniper.ui.SniperLauncher;
+import it.esteco.auctionsniper.domain.AuctionSniper;
+import it.esteco.auctionsniper.domain.SniperLauncher;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.AuctionHouse;
+import it.esteco.auctionsniper.domain.SniperCollector;
 import org.hamcrest.CustomMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;

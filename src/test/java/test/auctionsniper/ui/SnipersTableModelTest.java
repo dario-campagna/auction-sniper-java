@@ -1,11 +1,11 @@
 package test.auctionsniper.ui;
 
-import it.esteco.auctionsniper.Auction;
-import it.esteco.auctionsniper.AuctionSniper;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.AuctionSniper;
 import it.esteco.auctionsniper.Defect;
-import it.esteco.auctionsniper.SniperSnapshot;
-import it.esteco.auctionsniper.ui.Column;
-import it.esteco.auctionsniper.ui.SnipersTableModel;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
+import it.esteco.auctionsniper.adapters.ui.Column;
+import it.esteco.auctionsniper.adapters.ui.SnipersTableModel;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;

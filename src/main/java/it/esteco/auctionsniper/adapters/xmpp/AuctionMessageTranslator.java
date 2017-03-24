@@ -1,6 +1,6 @@
-package it.esteco.auctionsniper.xmpp;
+package it.esteco.auctionsniper.adapters.xmpp;
 
-import it.esteco.auctionsniper.AuctionEventListener;
+import it.esteco.auctionsniper.domain.AuctionEventListener;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
@@ -8,8 +8,8 @@ import org.jivesoftware.smack.packet.Message;
 import java.util.HashMap;
 import java.util.Map;
 
-import static it.esteco.auctionsniper.xmpp.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_CLOSE;
-import static it.esteco.auctionsniper.xmpp.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_PRICE;
+import static it.esteco.auctionsniper.adapters.xmpp.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_CLOSE;
+import static it.esteco.auctionsniper.adapters.xmpp.AuctionMessageTranslator.AuctionEvent.EVENT_TYPE_PRICE;
 
 public class AuctionMessageTranslator implements ChatMessageListener {
 

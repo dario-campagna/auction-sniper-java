@@ -1,8 +1,8 @@
 package test.auctionsniper.ui;
 
-import it.esteco.auctionsniper.SniperSnapshot;
-import it.esteco.auctionsniper.SniperState;
-import it.esteco.auctionsniper.ui.Column;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
+import it.esteco.auctionsniper.domain.SniperState;
+import it.esteco.auctionsniper.adapters.ui.Column;
 import org.junit.Test;
 
 import static org.hamcrest.core.IsEqual.equalTo;

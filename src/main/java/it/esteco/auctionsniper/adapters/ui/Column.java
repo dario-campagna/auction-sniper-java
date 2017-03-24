@@ -1,6 +1,6 @@
-package it.esteco.auctionsniper.ui;
+package it.esteco.auctionsniper.adapters.ui;
 
-import it.esteco.auctionsniper.SniperSnapshot;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
 
 public enum Column {
     ITEM_IDENTIFIER("Item") {

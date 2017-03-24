@@ -1,10 +1,10 @@
 package test.auctionsniper.runner;
 
-import it.esteco.auctionsniper.SniperState;
-import it.esteco.auctionsniper.ui.Main;
-import it.esteco.auctionsniper.ui.MainWindow;
-import it.esteco.auctionsniper.ui.SnipersTableModel;
-import it.esteco.auctionsniper.xmpp.XMPPAuctionHouse;
+import it.esteco.auctionsniper.domain.SniperState;
+import it.esteco.auctionsniper.Main;
+import it.esteco.auctionsniper.adapters.ui.MainWindow;
+import it.esteco.auctionsniper.adapters.ui.SnipersTableModel;
+import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
 import test.auctionsniper.fakeserver.FakeAuctionServer;
 
 public class ApplicationRunner {

@@ -1,6 +1,10 @@
 package test.auctionsniper;
 
-import it.esteco.auctionsniper.*;
+import it.esteco.auctionsniper.domain.AuctionSniper;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
+import it.esteco.auctionsniper.domain.SniperState;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.SniperListener;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -10,7 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static it.esteco.auctionsniper.AuctionEventListener.PriceSource;
+import static it.esteco.auctionsniper.domain.AuctionEventListener.PriceSource;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class AuctionSniperTest {

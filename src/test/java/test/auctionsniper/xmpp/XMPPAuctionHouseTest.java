@@ -1,8 +1,8 @@
 package test.auctionsniper.xmpp;
 
-import it.esteco.auctionsniper.Auction;
-import it.esteco.auctionsniper.AuctionEventListener;
-import it.esteco.auctionsniper.xmpp.XMPPAuctionHouse;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.AuctionEventListener;
+import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

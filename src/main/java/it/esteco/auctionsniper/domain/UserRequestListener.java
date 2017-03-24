@@ -1,4 +1,4 @@
-package it.esteco.auctionsniper;
+package it.esteco.auctionsniper.domain;
 
 import java.util.EventListener;
 

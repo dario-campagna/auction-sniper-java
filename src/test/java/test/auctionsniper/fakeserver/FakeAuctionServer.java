@@ -1,6 +1,6 @@
 package test.auctionsniper.fakeserver;
 
-import it.esteco.auctionsniper.xmpp.XMPPAuction;
+import it.esteco.auctionsniper.adapters.xmpp.XMPPAuction;
 import org.hamcrest.Matcher;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -11,8 +11,8 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
 import java.io.IOException;
 
-import static it.esteco.auctionsniper.xmpp.XMPPAuction.ITEM_ID_AS_LOGIN;
-import static it.esteco.auctionsniper.xmpp.XMPPAuctionHouse.AUCTION_RESOURCE;
+import static it.esteco.auctionsniper.adapters.xmpp.XMPPAuction.ITEM_ID_AS_LOGIN;
+import static it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse.AUCTION_RESOURCE;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;

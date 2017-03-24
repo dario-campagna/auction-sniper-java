@@ -3,14 +3,14 @@ package test.auctionsniper.runner;
 import com.objogate.wl.swing.AWTEventQueueProber;
 import com.objogate.wl.swing.driver.*;
 import com.objogate.wl.swing.gesture.GesturePerformer;
-import it.esteco.auctionsniper.ui.MainWindow;
+import it.esteco.auctionsniper.adapters.ui.MainWindow;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
-import static it.esteco.auctionsniper.ui.MainWindow.MAIN_WINDOW_NAME;
+import static it.esteco.auctionsniper.adapters.ui.MainWindow.MAIN_WINDOW_NAME;
 import static java.lang.String.valueOf;
 
 public class AuctionSniperDriver extends JFrameDriver {

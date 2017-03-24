@@ -1,6 +1,8 @@
-package it.esteco.auctionsniper.ui;
+package it.esteco.auctionsniper.adapters.ui;
 
-import it.esteco.auctionsniper.UserRequestListener;
+import it.esteco.auctionsniper.Announcer;
+import it.esteco.auctionsniper.domain.SniperPortfolio;
+import it.esteco.auctionsniper.domain.UserRequestListener;
 
 import javax.swing.*;
 import java.awt.*;

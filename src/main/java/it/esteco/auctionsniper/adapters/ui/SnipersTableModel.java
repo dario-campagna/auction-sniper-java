@@ -1,12 +1,17 @@
-package it.esteco.auctionsniper.ui;
+package it.esteco.auctionsniper.adapters.ui;
 
-import it.esteco.auctionsniper.*;
+import it.esteco.auctionsniper.Defect;
+import it.esteco.auctionsniper.domain.AuctionSniper;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
+import it.esteco.auctionsniper.domain.SniperState;
+import it.esteco.auctionsniper.domain.SniperListener;
+import it.esteco.auctionsniper.domain.SniperPortfolioListener;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnipersTableModel extends AbstractTableModel implements SniperListener, PortfolioListener {
+public class SnipersTableModel extends AbstractTableModel implements SniperListener, SniperPortfolioListener {
 
     private static String[] STATUS_TEXT = {"Joining", "Bidding", "Winning", "Lost", "Won"};
 
