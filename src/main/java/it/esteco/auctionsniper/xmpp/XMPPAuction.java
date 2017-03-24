@@ -3,7 +3,6 @@ package it.esteco.auctionsniper.xmpp;
 import it.esteco.auctionsniper.Auction;
 import it.esteco.auctionsniper.AuctionEventListener;
 import it.esteco.auctionsniper.ui.Announcer;
-import it.esteco.auctionsniper.ui.Main;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.chat.Chat;
@@ -13,7 +12,10 @@ import static java.lang.String.format;
 
 public class XMPPAuction implements Auction {
 
-    private static final String AUCTION_JID_FORMAT = Main.ITEM_ID_AS_LOGIN + "@%s/" + Main.AUCTION_RESOURCE;
+    public static final String ITEM_ID_AS_LOGIN = "auction-%s";
+    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
+    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
+    private static final String AUCTION_JID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + XMPPAuctionHouse.AUCTION_RESOURCE;
 
     private Announcer<AuctionEventListener> auctionEventListeners = Announcer.to(AuctionEventListener.class);
     private final Chat chat;
@@ -31,12 +33,12 @@ public class XMPPAuction implements Auction {
 
     @Override
     public void join() {
-        sendMessage(Main.JOIN_COMMAND_FORMAT);
+        sendMessage(JOIN_COMMAND_FORMAT);
     }
 
     @Override
     public void bid(int amount) {
-        String message = String.format(Main.BID_COMMAND_FORMAT, amount);
+        String message = String.format(BID_COMMAND_FORMAT, amount);
         sendMessage(message);
     }
 

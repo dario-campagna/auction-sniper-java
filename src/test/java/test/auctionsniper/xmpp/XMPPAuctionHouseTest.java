@@ -2,25 +2,22 @@ package test.auctionsniper.xmpp;
 
 import it.esteco.auctionsniper.Auction;
 import it.esteco.auctionsniper.AuctionEventListener;
-import it.esteco.auctionsniper.xmpp.XMPPAuction;
-import it.esteco.auctionsniper.ui.Main;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import it.esteco.auctionsniper.xmpp.XMPPAuctionHouse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import test.auctionsniper.runner.ApplicationRunner;
 import test.auctionsniper.fakeserver.FakeAuctionServer;
+import test.auctionsniper.runner.ApplicationRunner;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 
-public class XMPPAuctionTest {
+public class XMPPAuctionHouseTest {
 
     private final FakeAuctionServer fakeAuctionServer = new FakeAuctionServer("item-54321");
-    private XMPPTCPConnection connection;
+    private XMPPAuctionHouse auctionHouse;
 
     @Test
     public void receivesEventsFromAuctionServerAfterJoining() throws Exception {
@@ -28,7 +25,7 @@ public class XMPPAuctionTest {
 
         fakeAuctionServer.startSellingItem();
 
-        Auction auction = new XMPPAuction(connection, fakeAuctionServer.getItemId());
+        Auction auction = auctionHouse.auctionFor(fakeAuctionServer.getItemId());
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
 
         auction.join();
@@ -53,20 +50,12 @@ public class XMPPAuctionTest {
     }
 
     @Before
-    public void setUpConnection() throws Exception {
-        XMPPTCPConnectionConfiguration conf = XMPPTCPConnectionConfiguration.builder()
-                .setHost(FakeAuctionServer.XMPP_HOSTNAME)
-                .setServiceName(fakeAuctionServer.XMPP_SERVICE_NAME)
-                .setUsernameAndPassword(ApplicationRunner.SNIPER_ID, ApplicationRunner.SNIPER_PASSWORD)
-                .setResource(Main.AUCTION_RESOURCE)
-                .build();
-        connection = new XMPPTCPConnection(conf);
-        connection.connect();
-        connection.login();
+    public void setUp() throws Exception {
+        auctionHouse = XMPPAuctionHouse.connect(FakeAuctionServer.XMPP_HOSTNAME, FakeAuctionServer.XMPP_SERVICE_NAME, ApplicationRunner.SNIPER_ID, ApplicationRunner.SNIPER_PASSWORD);
     }
 
     @After
     public void disconnect() throws Exception {
-        connection.disconnect();
+        auctionHouse.disconnect();
     }
 }

@@ -1,6 +1,6 @@
 package test.auctionsniper.fakeserver;
 
-import it.esteco.auctionsniper.ui.Main;
+import it.esteco.auctionsniper.xmpp.XMPPAuction;
 import org.hamcrest.Matcher;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -11,8 +11,8 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
 import java.io.IOException;
 
-import static it.esteco.auctionsniper.ui.Main.AUCTION_RESOURCE;
-import static it.esteco.auctionsniper.ui.Main.ITEM_ID_AS_LOGIN;
+import static it.esteco.auctionsniper.xmpp.XMPPAuctionHouse.AUCTION_RESOURCE;
+import static it.esteco.auctionsniper.xmpp.XMPPAuction.ITEM_ID_AS_LOGIN;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -59,11 +59,11 @@ public class FakeAuctionServer {
     }
 
     public void hasReceivedJoinRequestFrom(String sniperId) throws InterruptedException {
-        receivesAMessageMatching(sniperId, equalTo(Main.JOIN_COMMAND_FORMAT));
+        receivesAMessageMatching(sniperId, equalTo(XMPPAuction.JOIN_COMMAND_FORMAT));
     }
 
     public void hasReceivedBid(int bid, String sniperId) throws InterruptedException {
-        receivesAMessageMatching(sniperId, equalTo(format(Main.BID_COMMAND_FORMAT, bid)));
+        receivesAMessageMatching(sniperId, equalTo(format(XMPPAuction.BID_COMMAND_FORMAT, bid)));
     }
 
     public void stop() {
