@@ -2,13 +2,12 @@ package it.esteco.auctionsniper;
 
 public class AuctionSniper implements AuctionEventListener {
 
-    private Auction auction;
+    private final Auction auction;
     private SniperListener listener;
     private SniperSnapshot snapshot;
 
-    public AuctionSniper(String itemId, Auction auction, SniperListener listener) {
+    public AuctionSniper(String itemId, Auction auction) {
         this.auction = auction;
-        this.listener = listener;
         this.snapshot = SniperSnapshot.joining(itemId);
     }
 
@@ -31,6 +30,14 @@ public class AuctionSniper implements AuctionEventListener {
                 break;
         }
         notifyChange();
+    }
+
+    public SniperSnapshot getSnapshot() {
+        return snapshot;
+    }
+
+    public void addSniperListener(SniperListener listener) {
+        this.listener = listener;
     }
 
     private void notifyChange() {

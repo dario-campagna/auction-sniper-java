@@ -16,16 +16,21 @@ public class MainWindow extends JFrame {
     public static final String JOIN_BUTTON_NAME = "join";
 
     private final Announcer<UserRequestListener> userRequests = Announcer.to(UserRequestListener.class);
-    private SnipersTableModel snipers;
 
-    public MainWindow(SnipersTableModel snipers) {
+    public MainWindow(SniperPortfolio portfolio) {
         super(APPLICATION_TITLE);
-        this.snipers = snipers;
         setName(MAIN_WINDOW_NAME);
-        fillContentPane(makeSnipersTable(), makeControls());
+        fillContentPane(makeSnipersTable(portfolio), makeControls());
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void fillContentPane(JTable snipersTable, JPanel controls) {
+        final Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
+        contentPane.add(controls, BorderLayout.NORTH);
+        contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
     }
 
     private JPanel makeControls() {
@@ -48,15 +53,10 @@ public class MainWindow extends JFrame {
         return controls;
     }
 
-    private void fillContentPane(JTable snipersTable, JPanel controls) {
-        final Container contentPane = getContentPane();
-        contentPane.setLayout(new BorderLayout());
-        contentPane.add(controls, BorderLayout.NORTH);
-        contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
-    }
-
-    private JTable makeSnipersTable() {
-        final JTable snipersTable = new JTable(snipers);
+    private JTable makeSnipersTable(SniperPortfolio portfolio) {
+        SnipersTableModel model = new SnipersTableModel();
+        portfolio.addPortfolioListener(model);
+        final JTable snipersTable = new JTable(model);
         snipersTable.setName(SNIPERS_TABLE_NAME);
         return snipersTable;
     }

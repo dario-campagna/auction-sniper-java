@@ -1,17 +1,12 @@
 package it.esteco.auctionsniper.ui;
 
-import it.esteco.auctionsniper.Auction;
 import it.esteco.auctionsniper.AuctionHouse;
-import it.esteco.auctionsniper.AuctionSniper;
-import it.esteco.auctionsniper.SniperSnapshot;
 import it.esteco.auctionsniper.xmpp.XMPPAuctionHouse;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class Main {
 
@@ -20,10 +15,8 @@ public class Main {
     private static final int ARG_USERNAME = 2;
     private static final int ARG_PASSWORD = 3;
 
-    private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
-    @SuppressWarnings("unused")
-    private Collection<Auction> notToBeGCd = new ArrayList<Auction>();
+    private final SniperPortfolio portfolio = new SniperPortfolio();
 
     public Main() throws Exception {
         startUserInterface();
@@ -37,7 +30,7 @@ public class Main {
     }
 
     private void startUserInterface() throws InvocationTargetException, InterruptedException {
-        SwingUtilities.invokeAndWait(() -> ui = new MainWindow(snipers));
+        SwingUtilities.invokeAndWait(() -> ui = new MainWindow(portfolio));
     }
 
     private void disconnectWhenUICloses(AuctionHouse auctionHouse) {
@@ -50,13 +43,7 @@ public class Main {
     }
 
     private void addUserRequestListenerFor(AuctionHouse auctionHouse) {
-        ui.addUserRequestListener(itemId -> {
-            snipers.addSniper(SniperSnapshot.joining(itemId));
-            Auction auction = auctionHouse.auctionFor(itemId);
-            notToBeGCd.add(auction);
-            auction.addAuctionEventListener(new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers)));
-            auction.join();
-        });
+        ui.addUserRequestListener(new SniperLauncher(auctionHouse, portfolio));
     }
 
 }

@@ -6,6 +6,7 @@ import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.States;
 import org.jmock.integration.junit4.JUnitRuleMockery;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class AuctionSniperTest {
     private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener = context.mock(SniperListener.class);
     private final States sniperState = context.states("sniper");
-    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
+    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction);
 
     @Test
     public void reportsLostIfAuctionClosesImmediately() throws Exception {
@@ -119,6 +120,11 @@ public class AuctionSniperTest {
         sniper.currentPrice(78, 45, PriceSource.FromOtherBidder);
         sniper.currentPrice(123, 45, PriceSource.FromSniper);
         sniper.auctionClosed();
+    }
+
+    @Before
+    public void attachListener() throws Exception {
+        sniper.addSniperListener(sniperListener);
     }
 
     private Matcher<SniperSnapshot> aSniperThatIs(SniperState state) {

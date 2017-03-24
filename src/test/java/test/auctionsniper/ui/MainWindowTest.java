@@ -2,7 +2,7 @@ package test.auctionsniper.ui;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import it.esteco.auctionsniper.ui.MainWindow;
-import it.esteco.auctionsniper.ui.SnipersTableModel;
+import it.esteco.auctionsniper.ui.SniperPortfolio;
 import org.junit.Test;
 import test.auctionsniper.runner.AuctionSniperDriver;
 
@@ -10,8 +10,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class MainWindowTest {
 
-    private final SnipersTableModel tableModel = new SnipersTableModel();
-    private final MainWindow mainWindow = new MainWindow(tableModel);
+    private SniperPortfolio portfolio = new SniperPortfolio();
+    private final MainWindow mainWindow = new MainWindow(portfolio);
     private final AuctionSniperDriver driver = new AuctionSniperDriver(100);
 
     @Test

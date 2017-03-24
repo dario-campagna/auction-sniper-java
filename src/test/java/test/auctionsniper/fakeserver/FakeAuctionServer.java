@@ -11,8 +11,8 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
 import java.io.IOException;
 
-import static it.esteco.auctionsniper.xmpp.XMPPAuctionHouse.AUCTION_RESOURCE;
 import static it.esteco.auctionsniper.xmpp.XMPPAuction.ITEM_ID_AS_LOGIN;
+import static it.esteco.auctionsniper.xmpp.XMPPAuctionHouse.AUCTION_RESOURCE;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
