@@ -58,6 +58,14 @@ public class FakeAuctionServer {
         currentChat.sendMessage("SOLVersion: 1.1; Event: CLOSE;");
     }
 
+    public void sendInvalidMessageContaining(String brokenMessage) {
+        try {
+            currentChat.sendMessage(brokenMessage);
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void hasReceivedJoinRequestFrom(String sniperId) throws InterruptedException {
         receivesAMessageMatching(sniperId, equalTo(XMPPAuction.JOIN_COMMAND_FORMAT));
     }
@@ -74,13 +82,8 @@ public class FakeAuctionServer {
         return itemId;
     }
 
-    public XMPPTCPConnection getConnection() {
-        return connection;
-    }
-
     private void receivesAMessageMatching(String sniperId, Matcher<String> messageMatcher) throws InterruptedException {
         messageListener.receivesAMessage(messageMatcher);
         assertThat(currentChat.getParticipant(), equalTo(sniperId));
     }
-
 }

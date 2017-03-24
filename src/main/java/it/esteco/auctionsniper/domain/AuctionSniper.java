@@ -1,10 +1,12 @@
 package it.esteco.auctionsniper.domain;
 
+import it.esteco.auctionsniper.Announcer;
+
 public class AuctionSniper implements AuctionEventListener {
 
     private Item item;
     private final Auction auction;
-    private SniperListener listener;
+    private Announcer<SniperListener> listeners = Announcer.to(SniperListener.class);
     private SniperSnapshot snapshot;
 
     public AuctionSniper(Item item, Auction auction) {
@@ -38,15 +40,21 @@ public class AuctionSniper implements AuctionEventListener {
         notifyChange();
     }
 
+    @Override
+    public void auctionFailed() {
+        snapshot = snapshot.failed();
+        notifyChange();
+    }
+
     public SniperSnapshot getSnapshot() {
         return snapshot;
     }
 
     public void addSniperListener(SniperListener listener) {
-        this.listener = listener;
+        listeners.addListener(listener);
     }
 
     private void notifyChange() {
-        listener.sniperStateChanged(snapshot);
+        listeners.announce().sniperStateChanged(snapshot);
     }
 }

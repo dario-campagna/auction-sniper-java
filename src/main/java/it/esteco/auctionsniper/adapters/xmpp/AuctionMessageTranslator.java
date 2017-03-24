@@ -1,6 +1,7 @@
 package it.esteco.auctionsniper.adapters.xmpp;
 
 import it.esteco.auctionsniper.domain.AuctionEventListener;
+import it.esteco.auctionsniper.domain.MissingValueException;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
@@ -23,6 +24,14 @@ public class AuctionMessageTranslator implements ChatMessageListener {
 
     @Override
     public void processMessage(Chat chat, Message message) {
+        try {
+            translate(message);
+        } catch (Exception parseException) {
+            listener.auctionFailed();
+        }
+    }
+
+    private void translate(Message message) throws MissingValueException {
         AuctionEvent event = AuctionEvent.from(message.getBody());
 
         String eventType = event.type();
@@ -52,31 +61,35 @@ public class AuctionMessageTranslator implements ChatMessageListener {
             return messageBody.split(";");
         }
 
-        public String type() {
+        public String type() throws MissingValueException {
             return get("Event");
         }
 
-        public int currentPrice() {
+        public int currentPrice() throws MissingValueException {
             return getInt("CurrentPrice");
         }
 
-        public int increment() {
+        public int increment() throws MissingValueException {
             return getInt("Increment");
         }
 
-        public AuctionEventListener.PriceSource isFrom(String sniperId) {
+        public AuctionEventListener.PriceSource isFrom(String sniperId) throws MissingValueException {
             return sniperId.equals(bidder()) ? AuctionEventListener.PriceSource.FromSniper : AuctionEventListener.PriceSource.FromOtherBidder;
         }
 
-        private String bidder() {
+        private String bidder() throws MissingValueException {
             return get("Bidder");
         }
 
-        private String get(String fieldName) {
-            return fields.get(fieldName);
+        private String get(String fieldName) throws MissingValueException {
+            String value = fields.get(fieldName);
+            if (null == value) {
+                throw new MissingValueException(fieldName);
+            }
+            return value;
         }
 
-        private int getInt(String fieldName) {
+        private int getInt(String fieldName) throws MissingValueException {
             return Integer.parseInt(get(fieldName));
         }
 

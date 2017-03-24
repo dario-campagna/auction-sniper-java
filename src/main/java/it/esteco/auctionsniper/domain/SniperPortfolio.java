@@ -1,20 +1,22 @@
 package it.esteco.auctionsniper.domain;
 
+import it.esteco.auctionsniper.Announcer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class SniperPortfolio implements SniperCollector {
 
     private Collection<AuctionSniper> snipers = new ArrayList<>();
-    private SniperPortfolioListener listener;
+    private Announcer<SniperPortfolioListener> listeners = Announcer.to(SniperPortfolioListener.class);
 
     @Override
     public void addSniper(AuctionSniper sniper) {
         snipers.add(sniper);
-        listener.sniperAdded(sniper);
+        listeners.announce().sniperAdded(sniper);
     }
 
     public void addPortfolioListener(SniperPortfolioListener listener) {
-        this.listener = listener;
+        listeners.addListener(listener);
     }
 }

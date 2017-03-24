@@ -65,9 +65,9 @@ public class AuctionSniperTest {
 
     @Test
     public void reportsWinningWhenCurrentPriceComesFromSniper() throws Exception {
+        ignoringAuction();
         allowingSniperBidding();
         context.checking(new Expectations() {{
-            ignoring(auction);
             atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 135, 135, SniperState.WINNING));
             when(sniperState.is("bidding"));
         }});
@@ -78,9 +78,9 @@ public class AuctionSniperTest {
 
     @Test
     public void reportsWinningIfCurrentPriceComesFromSniperWhenBidding() throws Exception {
+        ignoringAuction();
         allowingSniperBidding();
         context.checking(new Expectations() {{
-            ignoring(auction);
             atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 168, 168, SniperState.WINNING));
             when(sniperState.is("bidding"));
         }});
@@ -91,8 +91,8 @@ public class AuctionSniperTest {
 
     @Test
     public void reportsBiddingIfCurrentPriceComesFromOtherBidderWhenWinning() throws Exception {
+        ignoringAuction();
         context.checking(new Expectations() {{
-            ignoring(auction);
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.WINNING)));
             then(sniperState.is("winning"));
             atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 168, 213, SniperState.BIDDING));
@@ -105,9 +105,9 @@ public class AuctionSniperTest {
 
     @Test
     public void reportsWonIfAuctionClosesWhenWinning() throws Exception {
+        ignoringAuction();
         allowingSniperBidding();
         context.checking(new Expectations() {{
-            ignoring(auction);
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.WINNING)));
             when(sniperState.is("bidding"));
             then(sniperState.is("winning"));
@@ -190,15 +190,39 @@ public class AuctionSniperTest {
         sniper.currentPrice(1200, 90, PriceSource.FromOtherBidder);
     }
 
+    @Test
+    public void reportsFailedIfAuctionFailsWhenBidding() throws Exception {
+        ignoringAuction();
+        allowingSniperBidding();
+
+        expectsSniperToFailWhenItIs("bidding");
+
+        sniper.currentPrice(123, 45, PriceSource.FromOtherBidder);
+        sniper.auctionFailed();
+    }
+
     @Before
     public void attachListener() throws Exception {
         sniper.addSniperListener(sniperListener);
+    }
+
+    private void ignoringAuction() {
+        context.checking(new Expectations(){{
+            ignoring(auction);
+        }});
     }
 
     private void allowingSniperBidding() {
         context.checking(new Expectations(){{
             allowing(sniperListener).sniperStateChanged(with(aSniperThatIs(SniperState.BIDDING)));
             then(sniperState.is("bidding"));
+        }});
+    }
+
+    private void expectsSniperToFailWhenItIs(final String state) {
+        context.checking(new Expectations(){{
+            atLeast(1).of(sniperListener).sniperStateChanged(new SniperSnapshot(ITEM_ID, 0, 0, SniperState.FAILED));
+            when(sniperState.is(state));
         }});
     }
 
