@@ -3,7 +3,6 @@ package test.auctionsniper.e2e;
 import org.junit.After;
 import org.junit.Test;
 import test.auctionsniper.e2e.fakeserver.FakeAuctionServer;
-import test.auctionsniper.e2e.runner.ApplicationRunner;
 
 public class AuctionSniperEndToEndTest {
 
@@ -17,7 +16,7 @@ public class AuctionSniperEndToEndTest {
         application.startBiddingIn(auction);
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
         auction.announceClosed();
-        application.showsSniperHasLostAuction();
+        application.showsSniperHasLostAuction(auction, 0, 0);
     }
 
     @Test
@@ -33,7 +32,7 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.announceClosed();
-        application.showsSniperHasLostAuction();
+        application.showsSniperHasLostAuction(auction, 1000,1098);
     }
 
     @Test

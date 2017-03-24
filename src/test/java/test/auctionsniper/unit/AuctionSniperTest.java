@@ -20,7 +20,7 @@ public class AuctionSniperTest {
     private final Auction auction = context.mock(Auction.class);
     private final SniperListener sniperListener = context.mock(SniperListener.class);
     private final States sniperState = context.states("sniper");
-    private final AuctionSniper sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
+    private final AuctionSniper sniper = new AuctionSniper(auction, ITEM_ID, sniperListener);
 
     @Test
     public void reportsLostIfAuctionClosesImmediately() throws Exception {
