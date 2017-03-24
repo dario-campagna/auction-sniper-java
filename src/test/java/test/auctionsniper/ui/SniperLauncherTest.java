@@ -1,11 +1,6 @@
 package test.auctionsniper.ui;
 
-import it.esteco.auctionsniper.domain.AuctionSniper;
-import it.esteco.auctionsniper.domain.SniperLauncher;
-import it.esteco.auctionsniper.domain.SniperSnapshot;
-import it.esteco.auctionsniper.domain.Auction;
-import it.esteco.auctionsniper.domain.AuctionHouse;
-import it.esteco.auctionsniper.domain.SniperCollector;
+import it.esteco.auctionsniper.domain.*;
 import org.hamcrest.CustomMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
@@ -28,28 +23,28 @@ public class SniperLauncherTest {
 
     @Test
     public void addsNewSniperToCollectorAndThenJoinsAuction() throws Exception {
-        final String itemId = "item 123";
+        final Item item = new Item("item 123", 1);
         context.checking(new Expectations(){{
-            allowing(auctionHouse).auctionFor(itemId);
+            allowing(auctionHouse).auctionFor(item);
             will(returnValue(auction));
-            oneOf(auction).addAuctionEventListener(with(sniperForItem(itemId)));
+            oneOf(auction).addAuctionEventListener(with(sniperForItem(item)));
             when(auctionState.is("not joined"));
-            oneOf(sniperCollector).addSniper(with(sniperForItem(itemId)));
+            oneOf(sniperCollector).addSniper(with(sniperForItem(item)));
             when(auctionState.is("not joined"));
             oneOf(auction).join();
             then(auctionState.is("joined"));
         }});
 
-        launcher.joinAuction(itemId);
+        launcher.joinAuction(item);
     }
 
-    private Matcher<AuctionSniper> sniperForItem(String itemId) {
+    private Matcher<AuctionSniper> sniperForItem(Item item) {
         return new CustomMatcher<AuctionSniper>("Sniper for item") {
             @Override
             public boolean matches(Object o) {
                 if (o instanceof AuctionSniper) {
                     AuctionSniper actual = (AuctionSniper) o;
-                    return actual.getSnapshot().isForSameIteamAs(SniperSnapshot.joining(itemId));
+                    return actual.getSnapshot().isForSameIteamAs(SniperSnapshot.joining(item.identifier));
                 }
                 return false;
             }

@@ -1,10 +1,10 @@
 package test.auctionsniper.runner;
 
-import it.esteco.auctionsniper.domain.SniperState;
 import it.esteco.auctionsniper.Main;
 import it.esteco.auctionsniper.adapters.ui.MainWindow;
 import it.esteco.auctionsniper.adapters.ui.SnipersTableModel;
 import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
+import it.esteco.auctionsniper.domain.SniperState;
 import test.auctionsniper.fakeserver.FakeAuctionServer;
 
 public class ApplicationRunner {
@@ -17,9 +17,14 @@ public class ApplicationRunner {
     public void startBiddingIn(final FakeAuctionServer... auctions) {
         startSniper(auctions);
         for (FakeAuctionServer auction : auctions) {
-            driver.startBiddingFor(auction.getItemId());
+            driver.startBiddingFor(auction.getItemId(), Integer.MAX_VALUE);
             driver.showsSniperStatus(auction.getItemId(), 0, 0, SnipersTableModel.textFor(SniperState.JOINING));
         }
+    }
+
+    public void startBiddingWithStopPrice(FakeAuctionServer auction, int stopPrice) {
+        startSniper(new FakeAuctionServer[]{auction});
+        driver.startBiddingFor(auction.getItemId(), stopPrice);
     }
 
     public void stop() {
@@ -38,6 +43,10 @@ public class ApplicationRunner {
 
     public void hasShownSniperIsWinning(FakeAuctionServer auction, int winningBid) {
         driver.showsSniperStatus(auction.getItemId(), winningBid, winningBid, SnipersTableModel.textFor(SniperState.WINNING));
+    }
+
+    public void hasShownSniperIsLosing(FakeAuctionServer auction, int lastPrice, int lastBid) {
+        driver.showsSniperStatus(auction.getItemId(), lastPrice, lastBid, SnipersTableModel.textFor(SniperState.LOSING));
     }
 
     public void showsSniperHasWonAuction(FakeAuctionServer auction, int lastPrice) {

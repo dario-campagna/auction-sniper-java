@@ -1,7 +1,7 @@
 package it.esteco.auctionsniper.adapters.ui;
 
-import it.esteco.auctionsniper.domain.SniperSnapshot;
 import it.esteco.auctionsniper.domain.SniperListener;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
 
 import javax.swing.*;
 

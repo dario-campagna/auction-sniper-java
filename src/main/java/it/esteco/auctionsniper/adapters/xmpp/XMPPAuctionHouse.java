@@ -2,6 +2,7 @@ package it.esteco.auctionsniper.adapters.xmpp;
 
 import it.esteco.auctionsniper.domain.Auction;
 import it.esteco.auctionsniper.domain.AuctionHouse;
+import it.esteco.auctionsniper.domain.Item;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
@@ -34,7 +35,7 @@ public class XMPPAuctionHouse implements AuctionHouse {
     }
 
     @Override
-    public Auction auctionFor(String itemId) {
-        return new XMPPAuction(connection, itemId);
+    public Auction auctionFor(Item item) {
+        return new XMPPAuction(connection, item.identifier);
     }
 }

@@ -1,8 +1,9 @@
 package test.auctionsniper.xmpp;
 
+import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
 import it.esteco.auctionsniper.domain.Auction;
 import it.esteco.auctionsniper.domain.AuctionEventListener;
-import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
+import it.esteco.auctionsniper.domain.Item;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class XMPPAuctionHouseTest {
 
         fakeAuctionServer.startSellingItem();
 
-        Auction auction = auctionHouse.auctionFor(fakeAuctionServer.getItemId());
+        Auction auction = auctionHouse.auctionFor(new Item(fakeAuctionServer.getItemId(), 1));
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
 
         auction.join();

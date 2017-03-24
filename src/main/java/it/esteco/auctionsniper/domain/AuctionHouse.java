@@ -2,7 +2,7 @@ package it.esteco.auctionsniper.domain;
 
 public interface AuctionHouse {
 
-    Auction auctionFor(String itemId);
+    Auction auctionFor(Item item);
 
     void disconnect();
 }

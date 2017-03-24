@@ -1,5 +1,7 @@
 package it.esteco.auctionsniper.domain;
 
+import static it.esteco.auctionsniper.domain.SniperState.*;
+
 public class SniperSnapshot {
 
     public final String itemId;
@@ -15,15 +17,19 @@ public class SniperSnapshot {
     }
 
     public static SniperSnapshot joining(String itemId) {
-        return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
+        return new SniperSnapshot(itemId, 0, 0, JOINING);
     }
 
     public SniperSnapshot bidding(int newLastPrice, int newLastBid) {
-        return new SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING);
+        return new SniperSnapshot(itemId, newLastPrice, newLastBid, BIDDING);
     }
 
     public SniperSnapshot winning(int newLastPrice) {
-        return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING);
+        return new SniperSnapshot(itemId, newLastPrice, lastBid, WINNING);
+    }
+
+    public SniperSnapshot losing(int newLastPrice) {
+        return new SniperSnapshot(itemId, newLastPrice, lastBid, LOSING);
     }
 
     public SniperSnapshot closed() {

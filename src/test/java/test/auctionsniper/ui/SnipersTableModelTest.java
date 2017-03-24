@@ -1,11 +1,12 @@
 package test.auctionsniper.ui;
 
-import it.esteco.auctionsniper.domain.Auction;
-import it.esteco.auctionsniper.domain.AuctionSniper;
 import it.esteco.auctionsniper.Defect;
-import it.esteco.auctionsniper.domain.SniperSnapshot;
 import it.esteco.auctionsniper.adapters.ui.Column;
 import it.esteco.auctionsniper.adapters.ui.SnipersTableModel;
+import it.esteco.auctionsniper.domain.Auction;
+import it.esteco.auctionsniper.domain.AuctionSniper;
+import it.esteco.auctionsniper.domain.Item;
+import it.esteco.auctionsniper.domain.SniperSnapshot;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
@@ -51,7 +52,7 @@ public class SnipersTableModelTest {
 
     @Test
     public void notifiesListenersWhenAddingASniper() throws Exception {
-        AuctionSniper sniper = new AuctionSniper("item123", auction);
+        AuctionSniper sniper = new AuctionSniper(new Item("item123", 1234), auction);
         context.checking(new Expectations() {{
             ignoring(auction);
             oneOf(listener).tableChanged(with(anInsertionAtRow(0)));
@@ -67,8 +68,8 @@ public class SnipersTableModelTest {
 
     @Test
     public void holdsSnipersInAdditionOrder() throws Exception {
-        AuctionSniper sniper0 = new AuctionSniper("item-0", auction);
-        AuctionSniper sniper1 = new AuctionSniper("item-1", auction);
+        AuctionSniper sniper0 = new AuctionSniper(new Item("item-0", 1234), auction);
+        AuctionSniper sniper1 = new AuctionSniper(new Item("item-1", 789), auction);
 
         context.checking(new Expectations() {{
             ignoring(listener);
@@ -83,7 +84,7 @@ public class SnipersTableModelTest {
 
     @Test
     public void setsSniperValuesInColumns() throws Exception {
-        AuctionSniper sniper = new AuctionSniper("item-id", auction);
+        AuctionSniper sniper = new AuctionSniper(new Item("item-id", 1234), auction);
         SniperSnapshot bidding = sniper.getSnapshot().bidding(555, 666);
 
         context.checking(new Expectations() {{
@@ -99,8 +100,8 @@ public class SnipersTableModelTest {
 
     @Test
     public void updatesCorretRowForSniper() throws Exception {
-        AuctionSniper sniper = new AuctionSniper("item-0", auction);
-        AuctionSniper anotherSniper = new AuctionSniper("item-1", auction);
+        AuctionSniper sniper = new AuctionSniper(new Item("item-0", 123), auction);
+        AuctionSniper anotherSniper = new AuctionSniper(new Item("item-1", 456), auction);
         SniperSnapshot lost = anotherSniper.getSnapshot().closed();
 
         context.checking(new Expectations() {{

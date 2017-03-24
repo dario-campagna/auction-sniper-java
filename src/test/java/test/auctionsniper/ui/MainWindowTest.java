@@ -2,6 +2,7 @@ package test.auctionsniper.ui;
 
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import it.esteco.auctionsniper.adapters.ui.MainWindow;
+import it.esteco.auctionsniper.domain.Item;
 import it.esteco.auctionsniper.domain.SniperPortfolio;
 import org.junit.Test;
 import test.auctionsniper.runner.AuctionSniperDriver;
@@ -16,11 +17,11 @@ public class MainWindowTest {
 
     @Test
     public void makesUserRequestWhenJoinButtonClicked() throws Exception {
-        final ValueMatcherProbe<String> buttonProbe = new ValueMatcherProbe<>(equalTo("one item-i"), "join request");
+        final ValueMatcherProbe<Item> itemProbe = new ValueMatcherProbe<>(equalTo(new Item("one item-i", 789)), "item request");
 
-        mainWindow.addUserRequestListener(itemId -> buttonProbe.setReceivedValue(itemId));
+        mainWindow.addUserRequestListener(item -> itemProbe.setReceivedValue(item));
 
-        driver.startBiddingFor("one item-i");
-        driver.check(buttonProbe);
+        driver.startBiddingFor("one item-i", 789);
+        driver.check(itemProbe);
     }
 }

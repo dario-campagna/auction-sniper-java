@@ -1,10 +1,10 @@
 package it.esteco.auctionsniper;
 
-import it.esteco.auctionsniper.domain.SniperLauncher;
-import it.esteco.auctionsniper.domain.SniperPortfolio;
-import it.esteco.auctionsniper.domain.AuctionHouse;
 import it.esteco.auctionsniper.adapters.ui.MainWindow;
 import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
+import it.esteco.auctionsniper.domain.AuctionHouse;
+import it.esteco.auctionsniper.domain.SniperLauncher;
+import it.esteco.auctionsniper.domain.SniperPortfolio;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
