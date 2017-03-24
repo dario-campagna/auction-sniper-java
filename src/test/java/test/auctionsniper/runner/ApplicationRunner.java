@@ -7,11 +7,17 @@ import it.esteco.auctionsniper.adapters.xmpp.XMPPAuctionHouse;
 import it.esteco.auctionsniper.domain.SniperState;
 import test.auctionsniper.fakeserver.FakeAuctionServer;
 
+import java.io.IOException;
+
+import static org.hamcrest.CoreMatchers.containsString;
+
 public class ApplicationRunner {
 
     public static final String SNIPER_ID = "sniper";
     public static final String SNIPER_XMPP_ID = SNIPER_ID + "@" + FakeAuctionServer.XMPP_SERVICE_NAME + "/" + XMPPAuctionHouse.AUCTION_RESOURCE;
     public static final String SNIPER_PASSWORD = "sniper";
+
+    private AuctionLogDriver logDriver = new AuctionLogDriver();
     private AuctionSniperDriver driver;
 
     public void startBiddingIn(final FakeAuctionServer... auctions) {
@@ -57,10 +63,12 @@ public class ApplicationRunner {
         driver.showsSniperStatus(auction.getItemId(), 0, 0, SnipersTableModel.textFor(SniperState.FAILED));
     }
 
-    public void reportsInvalidMessage(FakeAuctionServer auction, String brokenMessage) {
+    public void reportsInvalidMessage(FakeAuctionServer auction, String message) throws IOException {
+        logDriver.hasEntry(containsString(message));
     }
 
     private void startSniper(final FakeAuctionServer[] auctions) {
+        logDriver.clearLog();
         Thread thread = new Thread("Test Application") {
             @Override
             public void run() {

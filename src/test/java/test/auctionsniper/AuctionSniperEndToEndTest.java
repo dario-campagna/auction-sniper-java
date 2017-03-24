@@ -1,4 +1,4 @@
-package test.auctionsniper.e2e;
+package test.auctionsniper;
 
 import org.junit.After;
 import org.junit.Test;
